@@ -2,3 +2,4 @@ dist/
 build/
 .gradle/
 .nb-gradle/
+/local.properties
