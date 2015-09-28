@@ -1,24 +1,12 @@
-apply plugin: "java"
+plugins {
+    id "com.jfrog.bintray" version "1.3.1"
+}
 
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-    }
-}
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
 sourceSets {
     main {
         java {
@@ -34,18 +22,34 @@ jar {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
+ 
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'me.whiteoak.minlog'
+            artifactId 'oak-minlog'
+            version '1.0'
+        }
+    }
+}
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
-    configurations = ['archives']
     pkg {
         repo = "maven"
         name = "oak-minlog"
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
+        websiteUrl = 'https://github.com/White-Oak/oak-minlog' 
+        vcsUrl = 'https://github.com/White-Oak/oak-minlog.git'
         licenses = ["Apache-2.0"]
         publish = true
+	version {
+	    name = '1.0'
+	    desc = 'Lightweight logging library'
+	    vcsTag = '1.0.0'
+        }
+	publications = ['MyPublication'] 
     }
+    
 }
