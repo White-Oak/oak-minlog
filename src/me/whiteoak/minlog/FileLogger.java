@@ -12,6 +12,7 @@ public class FileLogger extends Log.Logger {
 
     private File logsDirectory = new File("./logs/");
     private String logFileSuffix = "_log.txt";
+    private static boolean alreadyFailed = false;
 
     public void setLogFileSuffix(String logFileSuffix) {
 	this.logFileSuffix = logFileSuffix;
@@ -23,17 +24,22 @@ public class FileLogger extends Log.Logger {
 
     @Override
     protected void print(CharSequence message, String category) {
-	logsDirectory.mkdir();
-	File file = new File(logsDirectory, category + logFileSuffix);
-	if (file.canWrite()) {
-	    try (FileWriter fileWriter = new FileWriter(file)) {
-		fileWriter.append(message);
-		fileWriter.append(System.lineSeparator());
-	    } catch (IOException ex) {
-		super.log(Log.LEVEL_ERROR, "minlog", "While writing to " + file.getPath(), ex);
+	System.out.println(message);
+	if (!alreadyFailed) {
+	    logsDirectory.mkdir();
+	    File file = new File(logsDirectory, category + logFileSuffix);
+	    if (file.canWrite()) {
+		try (FileWriter fileWriter = new FileWriter(file)) {
+		    fileWriter.append(message);
+		    fileWriter.append(System.lineSeparator());
+		} catch (IOException ex) {
+		    alreadyFailed = true;
+		    super.log(Log.LEVEL_ERROR, "minlog", "While writing to " + file.getPath(), ex);
+		}
+	    } else {
+		alreadyFailed = true;
+		log(Log.LEVEL_ERROR, "minlog", "Cannot write to " + file.getPath(), null);
 	    }
-	} else {
-	    log(Log.LEVEL_ERROR, "minlog", "Cannot write to " + file.getPath(), null);
 	}
     }
 }
