@@ -4,13 +4,13 @@ import java.io.*;
 
 /**
  * Writes log to a file. A new file is created for every category.<br>
- * Logs are stored in ./logs/ by default. Logs have "_log.txt" suffix by default.
+ * Logs are stored in logs/ by default. Logs have "_log.txt" suffix by default.
  *
  * @author White Oak
  */
 public class FileLogger extends Log.Logger {
 
-    private File logsDirectory = new File("./logs/");
+    private File logsDirectory = new File("logs");
     private String logFileSuffix = "_log.txt";
     private static boolean alreadyFailed = false;
 
@@ -26,8 +26,19 @@ public class FileLogger extends Log.Logger {
     protected void print(CharSequence message, String category) {
 	System.out.println(message);
 	if (!alreadyFailed) {
-	    logsDirectory.mkdir();
+	    if (!logsDirectory.mkdir() && !logsDirectory.isDirectory()) {
+		alreadyFailed = true;
+		log(Log.LEVEL_ERROR, "minlog", "Cannot create folder " + logsDirectory.getPath(), null);
+	    }
 	    File file = new File(logsDirectory, category + logFileSuffix);
+	    if (!file.exists()) {
+		try {
+		    file.createNewFile();
+		} catch (IOException ex) {
+		    alreadyFailed = true;
+		    super.log(Log.LEVEL_ERROR, "minlog", "Cannot create " + file.getPath(), ex);
+		}
+	    }
 	    if (file.canWrite()) {
 		try (FileWriter fileWriter = new FileWriter(file)) {
 		    fileWriter.append(message);

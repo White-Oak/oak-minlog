@@ -17,7 +17,7 @@ sourceSets {
 
 jar {
     libsDirName = "$rootProject.projectDir/dist"
-    version = "1.0.1"
+    version = "1.0.2"
 }
 
 Properties properties = new Properties()
@@ -29,7 +29,7 @@ publishing {
             from components.java
             groupId 'me.whiteoak.minlog'
             artifactId 'oak-minlog'
-            version '1.0.1'
+            version '1.0.3'
         }
     }
 }
@@ -45,9 +45,9 @@ bintray {
         licenses = ["Apache-2.0"]
         publish = true
 	version {
-	    name = '1.0.1'
+	    name = '1.0.3'
 	    desc = 'Lightweight logging library'
-	    vcsTag = '1.0.1'
+	    vcsTag = '1.0.3'
         }
 	publications = ['MyPublication'] 
     }
