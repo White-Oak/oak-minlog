@@ -244,6 +244,13 @@ public class Log {
 
 	private final long firstLogTime = new Date().getTime();
 
+	/**
+	 * Forms a log message from the components. By default calls {@link #print(java.lang.CharSequence, java.lang.String) }
+	 * @param level
+	 * @param category
+	 * @param message
+	 * @param ex
+	 */
 	public void log(int level, String category, String message, Throwable ex) {
 	    StringBuilder builder = new StringBuilder(256);
 
@@ -260,6 +267,12 @@ public class Log {
 	    print(builder, category);
 	}
 
+	/**
+	 * Forms a char sequence describing an exception.
+	 *
+	 * @param ex
+	 * @return
+	 */
 	protected CharSequence getEx(Throwable ex) {
 	    StringBuilder stringBuilder = new StringBuilder();
 	    if (ex != null) {
@@ -271,6 +284,12 @@ public class Log {
 	    return stringBuilder;
 	}
 
+	/**
+	 * Forms a char sequence describing a category.
+	 *
+	 * @param category
+	 * @return
+	 */
 	protected CharSequence getCategory(String category) {
 	    StringBuilder stringBuilder = new StringBuilder();
 	    if (category != null) {
@@ -281,6 +300,12 @@ public class Log {
 	    return stringBuilder;
 	}
 
+	/**
+	 * Forms a char sequence describing a log level of a message.
+	 *
+	 * @param level1
+	 * @return
+	 */
 	protected CharSequence getLevel(int level1) {
 	    CharSequence levelSequence = null;
 	    switch (level1) {
@@ -303,6 +328,11 @@ public class Log {
 	    return levelSequence;
 	}
 
+	/**
+	 * Forms a char sequence containing time since a first log message.
+	 *
+	 * @return
+	 */
 	protected CharSequence getTimeSinceStart() {
 	    StringBuilder builder = new StringBuilder();
 	    long time = new Date().getTime() - firstLogTime;
@@ -321,7 +351,8 @@ public class Log {
 	}
 
 	/**
-	 * Prints the message to System.out. Called by the default implementation of {@link #log(int, String, String, Throwable)}.
+	 * Prints the log message. Called by the default implementation of {@link #log(int, java.lang.String, java.lang.String, java.lang.Throwable)
+	 * }.
 	 *
 	 * @param message
 	 * @param category
