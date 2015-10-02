@@ -5,7 +5,8 @@ plugins {
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceSets {
     main {
@@ -17,7 +18,7 @@ sourceSets {
 
 jar {
     libsDirName = "$rootProject.projectDir/dist"
-    version = "1.0.2"
+    version = "1.0.4"
 }
 
 Properties properties = new Properties()
@@ -29,7 +30,7 @@ publishing {
             from components.java
             groupId 'me.whiteoak.minlog'
             artifactId 'oak-minlog'
-            version '1.0.3'
+            version '1.0.4'
         }
     }
 }
@@ -45,9 +46,9 @@ bintray {
         licenses = ["Apache-2.0"]
         publish = true
 	version {
-	    name = '1.0.3'
+	    name = '1.0.4'
 	    desc = 'Lightweight logging library'
-	    vcsTag = '1.0.3'
+	    vcsTag = '1.0.4'
         }
 	publications = ['MyPublication'] 
     }
